@@ -21,7 +21,7 @@ const handleMenuClick: MenuProps['onClick'] = e => {
 
 <template>
   <main>
-    <Navbar />
+   
     <div class="container">
       <div class="header">
         <a-input v-model:value="value" placeholder="Search for a country..." class="search-input">

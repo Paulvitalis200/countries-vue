@@ -1,7 +1,7 @@
 <script setup lang="ts">
 </script>
 <template>
-     <a-card hoverable style="width: 264px" class="card">
+     <a-card hoverable class="card">
     <template #cover>
       <img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" class="flag"/>
     </template>
@@ -34,7 +34,8 @@
 }
 
 .card {
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    box-shadow: rgba(99, 99, 99, 0.122) 0px 2px 8px 0px;
     border-radius: 5px;
+    margin-bottom: 80px;
 }
 </style>

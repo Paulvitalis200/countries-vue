@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import CountryCard from '../components/CountryCard.vue'
-import { watch, ref } from 'vue';
+import { watch, ref, onMounted, reactive } from 'vue';
 import { UserOutlined, InfoCircleOutlined, SearchOutlined, DownOutlined } from '@ant-design/icons-vue';
 import Navbar from '../components/Navbar.vue';
 import type { MenuProps } from 'ant-design-vue';
 import { useMonitorSize } from '../composables/monitor-size'
-
+import type { FlexProps } from 'ant-design-vue';
 const value = ref<string>('');
 const value1 = ref<string>('');
 watch(value, () => {
@@ -21,6 +21,8 @@ const handleMenuClick: MenuProps['onClick'] = e => {
 const sizes = useMonitorSize();
 console.log(sizes)
 
+const searchInput = ref('search-input-mobile-width')
+const searchInputDesktop = ref('search-input-desktop-width')
 const spanSize = () => {
   if (sizes.isMobile.value ) {
     return 24
@@ -30,14 +32,16 @@ const spanSize = () => {
     return 6
   }
 }
+const alignOptions = reactive<FlexProps['align'][]>(['flex-start', 'center', 'flex-end']);
+const alignItems = ref(alignOptions[1]);
+const alignItemsMobile = ref(alignOptions[0]);
 </script>
 
 <template>
   <main>
-   
     <div class="container">
-      <div class="header">
-        <a-input v-model:value="value" placeholder="Search for a country..." class="search-input">
+      <a-flex gap="large" :align="sizes.isMobile.value ? alignItemsMobile :  alignItems" :justify="'space-between'" :vertical="!sizes.isMobile.value ? false: true" class="header">
+        <a-input v-model:value="value" placeholder="Search for a country..." class="search-input" :class="sizes.isMobile.value ? searchInput : searchInputDesktop" >
           <template #prefix>
         <SearchOutlined style="color:#84848"/>
       </template></a-input>
@@ -63,7 +67,7 @@ const spanSize = () => {
         <DownOutlined />
       </a-button>
     </a-dropdown>
-      </div>
+  </a-flex>
     <a-row :gutter="{ xs: 8, sm: 16, md: 24, lg: 74 }">
     <a-col class="gutter-row" :span="spanSize()" :key="card" v-for="card in cards">
       <CountryCard />
@@ -77,7 +81,8 @@ const spanSize = () => {
 <style scoped>
 .container {
   width: 90%;
-  margin: 48px auto 0 auto;
+  padding-top: 48px;
+  margin: 0 auto 0 auto;
   overflow-x: hidden;
 }
 
@@ -91,14 +96,20 @@ main {
   border: none;
   padding: 10px 10px 10px 32px;
   box-shadow: rgba(99, 99, 99, 0.122) 0px 2px 8px 0px;
+
+}
+
+.search-input-mobile-width {
+  width: 100%;
+}
+
+.search-input-desktop-width {
   width: 30%;
 }
 
+
 .header {
   margin-bottom: 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .region-select {

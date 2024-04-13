@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { RouterLink } from 'vue-router';
 </script>
 <template>
+    <RouterLink to="/country/233">
      <a-card hoverable class="card">
     <template #cover>
       <img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" class="flag"/>
@@ -10,6 +12,7 @@
       <p class="population-text"><span class="bolden">Region: </span>Africa</p>
       <p class="population-text"><span class="bolden">Capital: </span>Kenya</p>
   </a-card>
+</RouterLink>
 </template>
 <style scoped>
 .flag{
@@ -38,4 +41,5 @@
     border-radius: 5px;
     margin-bottom: 80px;
 }
+
 </style>

@@ -1,19 +1,12 @@
 <script setup lang="ts">
 import CountryCard from '../components/CountryCard.vue'
-import { watch, ref, onMounted, reactive } from 'vue';
-import { UserOutlined, InfoCircleOutlined, SearchOutlined, DownOutlined } from '@ant-design/icons-vue';
-import Navbar from '../components/Navbar.vue';
+import { ref, reactive } from 'vue';
+import { UserOutlined, SearchOutlined, DownOutlined } from '@ant-design/icons-vue';
 import type { MenuProps } from 'ant-design-vue';
 import { useMonitorSize } from '../composables/monitor-size'
 import type { FlexProps } from 'ant-design-vue';
 const value = ref<string>('');
-const value1 = ref<string>('');
-watch(value, () => {
-  console.log(value.value);
-});
-watch(value1, () => {
-  console.log(value1.value);
-});
+
 const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 const handleMenuClick: MenuProps['onClick'] = e => {
   console.log('click', e);
@@ -33,14 +26,12 @@ const spanSize = () => {
   }
 }
 const alignOptions = reactive<FlexProps['align'][]>(['flex-start', 'center', 'flex-end']);
-const alignItems = ref(alignOptions[1]);
-const alignItemsMobile = ref(alignOptions[0]);
 </script>
 
 <template>
   <main>
     <div class="container">
-      <a-flex gap="large" :align="sizes.isMobile.value ? alignItemsMobile :  alignItems" :justify="'space-between'" :vertical="!sizes.isMobile.value ? false: true" class="header">
+      <a-flex gap="large" :align="sizes.isMobile.value ? 'flex-start':  'center'" :justify="'space-between'" :vertical="!sizes.isMobile.value ? false: true" class="header">
         <a-input v-model:value="value" placeholder="Search for a country..." class="search-input" :class="sizes.isMobile.value ? searchInput : searchInputDesktop" >
           <template #prefix>
         <SearchOutlined style="color:#84848"/>
@@ -88,7 +79,6 @@ const alignItemsMobile = ref(alignOptions[0]);
 
 main {
   background: #FAFAFA;
-  font-family: 'Nunito Sans', sans-serif;
 }
 
 .search-input {

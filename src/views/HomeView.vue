@@ -4,6 +4,7 @@ import { watch, ref } from 'vue';
 import { UserOutlined, InfoCircleOutlined, SearchOutlined, DownOutlined } from '@ant-design/icons-vue';
 import Navbar from '../components/Navbar.vue';
 import type { MenuProps } from 'ant-design-vue';
+import { useMonitorSize } from '../composables/monitor-size'
 
 const value = ref<string>('');
 const value1 = ref<string>('');
@@ -17,6 +18,18 @@ const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 const handleMenuClick: MenuProps['onClick'] = e => {
   console.log('click', e);
 };
+const sizes = useMonitorSize();
+console.log(sizes)
+
+const spanSize = () => {
+  if (sizes.isMobile.value ) {
+    return 24
+  } else if (sizes.isTablet.value) {
+    return 8
+  } else {
+    return 6
+  }
+}
 </script>
 
 <template>
@@ -51,8 +64,8 @@ const handleMenuClick: MenuProps['onClick'] = e => {
       </a-button>
     </a-dropdown>
       </div>
-    <a-row :gutter="74">
-    <a-col class="gutter-row" :span="6" :key="card" v-for="card in cards">
+    <a-row :gutter="{ xs: 8, sm: 16, md: 24, lg: 74 }">
+    <a-col class="gutter-row" :span="spanSize()" :key="card" v-for="card in cards">
       <CountryCard />
     </a-col>
    

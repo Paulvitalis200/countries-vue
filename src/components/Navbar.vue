@@ -1,10 +1,12 @@
 <script setup lang="ts">
-
+import { RouterLink } from 'vue-router';
 </script>
 <template>
     <main>
         <div class="container">
+            <RouterLink to="/">
         <a-typography-title :level="4" class="title">Where in the world?</a-typography-title>
+    </RouterLink>
         <a-typography-text class="dark-mode-text">Dark Mode</a-typography-text>
         </div>
     </main>
@@ -36,4 +38,5 @@ main {
     font-weight: 500;
 }
 
+a { text-decoration: none; color: black }
 </style>

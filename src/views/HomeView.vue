@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import CountryCard from '../components/CountryCard.vue'
-import { ref, reactive } from 'vue';
+import SkeletonCard from '../components/SkeletonCard.vue';
+import { ref, reactive, onMounted } from 'vue';
 import { UserOutlined, SearchOutlined, DownOutlined } from '@ant-design/icons-vue';
 import type { MenuProps } from 'ant-design-vue';
 import { useMonitorSize } from '../composables/monitor-size'
 import type { FlexProps } from 'ant-design-vue';
+import {useCountryStore} from '@/stores/countries'
+import { storeToRefs } from 'pinia';
 const value = ref<string>('');
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
 const handleMenuClick: MenuProps['onClick'] = e => {
   console.log('click', e);
 };
@@ -26,6 +28,16 @@ const spanSize = () => {
   }
 }
 const alignOptions = reactive<FlexProps['align'][]>(['flex-start', 'center', 'flex-end']);
+
+const countryStore = useCountryStore()
+
+const { countries, loading } = storeToRefs(countryStore)
+
+
+console.log(countries)
+
+const skeletons = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+
 </script>
 
 <template>
@@ -59,11 +71,23 @@ const alignOptions = reactive<FlexProps['align'][]>(['flex-start', 'center', 'fl
       </a-button>
     </a-dropdown>
   </a-flex>
-    <a-row :gutter="{ xs: 8, sm: 16, md: 24, lg: 74 }">
-    <a-col class="gutter-row" :span="spanSize()" :key="card" v-for="card in cards">
-      <CountryCard />
+    <a-row :gutter="{ xs: 8, sm: 16, md: 24, lg: 74 }" v-if="!loading">
+      
+    <a-col class="gutter-row" :span="spanSize()" :key="country?.name.common" v-for="country in countries" >
+      <CountryCard :country="country"/>
     </a-col>
+  
    
+    </a-row>
+
+    <a-row :gutter="{ xs: 8, sm: 16, md: 24, lg: 74 }" v-else>
+      
+    
+      <a-col class="gutter-row" :span="spanSize()" :key="skeleton" v-for="skeleton in skeletons">
+        
+        <SkeletonCard />
+      </a-col>
+     
     </a-row>
   </div>
    
@@ -79,6 +103,7 @@ const alignOptions = reactive<FlexProps['align'][]>(['flex-start', 'center', 'fl
 
 main {
   background: #FAFAFA;
+  height: 100vh;
 }
 
 .search-input {

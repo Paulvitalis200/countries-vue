@@ -1,16 +1,18 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
+
+const {country} = defineProps(['country'])
 </script>
 <template>
     <RouterLink to="/country/233">
      <a-card hoverable class="card">
     <template #cover>
-      <img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" class="flag"/>
+      <img alt="example" :src="country.flags.png" class="flag"/>
     </template>
-<h2 class="country-title">United States of America</h2>
-    <p class="population-text"><span class="bolden">Population: </span>1000000</p>
-      <p class="population-text"><span class="bolden">Region: </span>Africa</p>
-      <p class="population-text"><span class="bolden">Capital: </span>Kenya</p>
+<h2 class="country-title">{{ country.name?.official }}</h2>
+    <p class="population-text"><span class="bolden">Population: </span>{{ country.population }}</p>
+      <p class="population-text"><span class="bolden">Region: </span>{{ country.region }}</p>
+      <p class="population-text"><span class="bolden">Capital: </span>{{ country.capital?.length > 0 ? country?.capital[0] : '' }}</p>
   </a-card>
 </RouterLink>
 </template>

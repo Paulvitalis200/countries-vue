@@ -1,20 +1,27 @@
 <script setup lang="ts">
 import CountryCard from '../components/CountryCard.vue'
 import SkeletonCard from '../components/SkeletonCard.vue';
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted, watch } from 'vue';
 import { UserOutlined, SearchOutlined, DownOutlined } from '@ant-design/icons-vue';
 import type { MenuProps } from 'ant-design-vue';
 import { useMonitorSize } from '../composables/monitor-size'
 import type { FlexProps } from 'ant-design-vue';
 import {useCountryStore} from '@/stores/countries'
 import { storeToRefs } from 'pinia';
-const value = ref<string>('');
+const search = ref<string>('');
 
+const region:any = ref('')
 const handleMenuClick: MenuProps['onClick'] = e => {
-  console.log('click', e);
+  if (e.key === 'all') {
+    countryStore.fetchCountries()
+    region.value = ''
+  } else {
+    countryStore.fetchRegionCountries(e.key)
+    region.value = e.key
+  }
+  
 };
 const sizes = useMonitorSize();
-console.log(sizes)
 
 const searchInput = ref('search-input-mobile-width')
 const searchInputDesktop = ref('search-input-desktop-width')
@@ -31,41 +38,55 @@ const alignOptions = reactive<FlexProps['align'][]>(['flex-start', 'center', 'fl
 
 const countryStore = useCountryStore()
 
-const { countries, loading } = storeToRefs(countryStore)
+const { filteredCountries, loading } = storeToRefs(countryStore)
 
+const searchCountry = () => {
 
-console.log(countries)
+}
 
 const skeletons = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
 
+watch(search, () => {
+  countryStore.filterCountries(search.value)
+})
 </script>
 
 <template>
   <main>
     <div class="container">
       <a-flex gap="large" :align="sizes.isMobile.value ? 'flex-start':  'center'" :justify="'space-between'" :vertical="!sizes.isMobile.value ? false: true" class="header">
-        <a-input v-model:value="value" placeholder="Search for a country..." class="search-input" :class="sizes.isMobile.value ? searchInput : searchInputDesktop" >
+        <a-input v-model:value="search" placeholder="Search for a country..." class="search-input" :class="sizes.isMobile.value ? searchInput : searchInputDesktop" >
           <template #prefix>
-        <SearchOutlined style="color:#84848"/>
+        <SearchOutlined style="color:#84848" />
       </template></a-input>
       <a-dropdown class="dropdown">
       <template #overlay>
         <a-menu @click="handleMenuClick">
-          <a-menu-item key="1">
-            <UserOutlined />
-            1st menu item
+          <a-menu-item key="all">
+            All
           </a-menu-item>
-          <a-menu-item key="2">
-            <UserOutlined />
-            2nd menu item
+          <a-menu-item key="Africa">
+            Africa
           </a-menu-item>
-          <a-menu-item key="3">
-            <UserOutlined />
-            3rd item
+          <a-menu-item key="America">
+            America
+          </a-menu-item>
+          <a-menu-item key="Asia">
+            Asia
+          </a-menu-item>
+          <a-menu-item key="Europe">
+            Europe
+          </a-menu-item>
+          <a-menu-item key="Oceania">
+            Oceania
           </a-menu-item>
         </a-menu>
       </template>
-      <a-button>
+      <a-button v-if="region">
+        Filter by Region: {{ region }}
+        <DownOutlined />
+      </a-button>
+      <a-button v-else>
         Filter by Region
         <DownOutlined />
       </a-button>
@@ -73,7 +94,7 @@ const skeletons = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
   </a-flex>
     <a-row :gutter="{ xs: 8, sm: 16, md: 24, lg: 74 }" v-if="!loading">
       
-    <a-col class="gutter-row" :span="spanSize()" :key="country?.name.common" v-for="country in countries" >
+    <a-col class="gutter-row" :span="spanSize()" :key="country?.name.common" v-for="country in filteredCountries" >
       <CountryCard :country="country"/>
     </a-col>
   

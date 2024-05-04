@@ -3,9 +3,9 @@ import { reactive, ref, onMounted } from 'vue';
 import { ArrowLeftOutlined } from '@ant-design/icons-vue';
 import type { FlexProps } from 'ant-design-vue';
 import { useMonitorSize } from '../composables/monitor-size';
-import { RouterLink } from 'vue-router';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import  CountryInterface  from '../models/country';
+import {useCountryStore} from '@/stores/countries'
 
 import axios from "axios";
 const customGapSize = ref<number>(44);
@@ -18,6 +18,8 @@ const sizes = useMonitorSize();
 const country = ref<CountryInterface | {}>({})
 const loading = ref(true)
 
+const countryStore = useCountryStore()
+const router = useRouter()
 onMounted(async () => {
     const route = useRoute()
     const routeparams:string = route.params.name
@@ -26,19 +28,23 @@ onMounted(async () => {
     loading.value = false
 })
 
+const redirectHome = () => {
+    countryStore.fetchCountries()
+    router.push("/")
+}
 
 </script>
 <template>
     <main>
         <div class="container">
-            <RouterLink to="/">
-            <a-flex gap="middle" horizontal class="back-btn" :class="sizes.isMobile.value ? 'top-mobile' : 'top'" :align="alignItems">
-            <ArrowLeftOutlined />
+           
+            <a-flex gap="middle" horizontal class="back-btn" :class="sizes.isMobile.value ? 'top-mobile' : 'top'" :align="alignItems" >
+            <ArrowLeftOutlined @click="redirectHome"/>
             
-                <a-typography-text class="back-text">Back</a-typography-text>
+                <a-typography-text class="back-text" @click="redirectHome">Back</a-typography-text>
 
         </a-flex>
-    </RouterLink>
+
        
         <a-flex :gap="customGapSize" :vertical="!sizes.isMobile.value ? false: true" v-if="country && !loading">
             <img :src="country.flags.png" :class="sizes.isMobile.value ? 'country-flag-mobile' : 'country-flag'"/>
@@ -136,6 +142,10 @@ img {
     padding: 5px 10px;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
    border-radius: 5px;
+}
+
+.back-btn:hover {
+    cursor: pointer;
 }
 
 a { text-decoration: none; color: black }

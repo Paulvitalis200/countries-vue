@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import CountryCard from '../components/CountryCard.vue'
 import SkeletonCard from '../components/SkeletonCard.vue';
-import { ref, reactive, onMounted, watch } from 'vue';
-import { UserOutlined, SearchOutlined, DownOutlined } from '@ant-design/icons-vue';
+import { ref, reactive, watch } from 'vue';
+import {SearchOutlined, DownOutlined } from '@ant-design/icons-vue';
 import type { MenuProps } from 'ant-design-vue';
 import { useMonitorSize } from '../composables/monitor-size'
 import type { FlexProps } from 'ant-design-vue';
@@ -40,9 +40,6 @@ const countryStore = useCountryStore()
 
 const { filteredCountries, loading } = storeToRefs(countryStore)
 
-const searchCountry = () => {
-
-}
 
 const skeletons = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
 

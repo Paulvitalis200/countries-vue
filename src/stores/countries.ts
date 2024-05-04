@@ -6,6 +6,7 @@ export const useCountryStore = defineStore("countries", () => {
   const countries = ref([]);
   const loading = ref(false);
   const filteredCountries = ref([]);
+  const country = ref({});
 
   const fetchCountries = async () => {
     loading.value = true;
@@ -30,7 +31,7 @@ export const useCountryStore = defineStore("countries", () => {
 
   const filterCountries = (country: string) => {
     filteredCountries.value = countries.value.filter((countryState: any) =>
-      countryState.name.official.toLowerCase().includes(country.toLowerCase())
+      countryState.name.common.toLowerCase().includes(country.toLowerCase())
     );
   };
 

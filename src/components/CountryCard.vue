@@ -4,12 +4,12 @@ import { RouterLink } from 'vue-router';
 const {country} = defineProps(['country'])
 </script>
 <template>
-    <RouterLink to="/country/233">
+    <RouterLink :to="`/country/${country.name.common}`">
      <a-card hoverable class="card">
     <template #cover>
       <img alt="example" :src="country.flags.png" class="flag"/>
     </template>
-<h2 class="country-title">{{ country.name?.official }}</h2>
+<h2 class="country-title">{{ country.name?.common }}</h2>
     <p class="population-text"><span class="bolden">Population: </span>{{ country.population }}</p>
       <p class="population-text"><span class="bolden">Region: </span>{{ country.region }}</p>
       <p class="population-text"><span class="bolden">Capital: </span>{{ country.capital?.length > 0 ? country?.capital[0] : '' }}</p>

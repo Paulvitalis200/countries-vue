@@ -4,7 +4,6 @@ import { ArrowLeftOutlined } from '@ant-design/icons-vue';
 import type { FlexProps } from 'ant-design-vue';
 import { useMonitorSize } from '../composables/monitor-size';
 import { useRoute, useRouter } from 'vue-router';
-import  CountryInterface  from '../models/country';
 import {useCountryStore} from '@/stores/countries'
 
 import axios from "axios";
@@ -15,14 +14,14 @@ const alignOptions = reactive<FlexProps['align'][]>(['flex-start', 'center', 'fl
 const alignItems = ref(alignOptions[1]);
 
 const sizes = useMonitorSize();
-const country = ref<CountryInterface | {}>({})
+const country = ref<any>({})
 const loading = ref(true)
 
 const countryStore = useCountryStore()
 const router = useRouter()
 onMounted(async () => {
     const route = useRoute()
-    const routeparams:string = route.params.name
+    const routeparams = route.params.name
     const { data } = await axios.get(`https://restcountries.com/v3.1/name/${routeparams}?fullText=true`);
     country.value = data[0]
     loading.value = false

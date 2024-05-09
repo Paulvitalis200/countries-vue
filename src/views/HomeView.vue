@@ -91,7 +91,7 @@ watch(search, () => {
   </a-flex>
     <a-row :gutter="{ xs: 8, sm: 16, md: 24, lg: 74 }" v-if="!loading">
       
-    <a-col class="gutter-row" :span="spanSize()" :key="country?.name.common" v-for="country in filteredCountries" >
+    <a-col class="gutter-row" :span="spanSize()" :key="country['name']['common']" v-for="country in filteredCountries" >
       <CountryCard :country="country"/>
     </a-col>
   
